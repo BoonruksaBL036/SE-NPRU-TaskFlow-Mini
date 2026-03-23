@@ -4,6 +4,7 @@ import useTaskStore from "../store/useTaskStore";
 import { AlertCircle, LogOut } from "lucide-react";
 import TaskForm from "../components/TaskForm";
 import TaskCard from "../components/TaskCard";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, logout } = useAuthStore();
@@ -17,6 +18,8 @@ const Dashboard = () => {
     updateTask,
   } = useTaskStore();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
@@ -25,32 +28,63 @@ const Dashboard = () => {
     await createTask(formData);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <div className="simple-dashboard">
-      <div className="dashboard-body">
-        {/* แสดงสถานะ Error */}
+    <div className="min-h-screen bg-gray-100">
+      {/* HEADER */}
+      <div className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+        <div>
+          <h1 className="text-xl font-bold text-gray-800">Task Dashboard</h1>
+          <p className="text-sm text-gray-500">
+            Welcome, {user?.name || "User"}
+          </p>
+        </div>
+
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+        >
+          <LogOut size={18} />
+          Logout
+        </button>
+      </div>
+
+      {/* BODY */}
+      <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
+        {/* ERROR */}
         {error && (
-          <div className="error-banner">
+          <div className="flex items-center gap-2 bg-red-100 text-red-600 p-4 rounded-lg">
             <AlertCircle size={20} />
-            {error}
+            <span>{error}</span>
           </div>
         )}
 
-        {/* 3. เพิ่มงาน (TaskForm) */}
-        <TaskForm onSubmit={handleCreateTask} isLoading={isLoading} />
+        {/* CREATE TASK */}
+        <div className="bg-white p-6 rounded-2xl shadow">
+          <h2 className="text-lg font-semibold mb-4">Add New Task</h2>
+          <TaskForm onSubmit={handleCreateTask} isLoading={isLoading} />
+        </div>
 
-        {/* 4. แสดงสถานะ Loading หรือ รายการงาน */}
-        <div className="section-box task-list-section">
-          <h3>My Tasks ({tasks.length})</h3>
+        {/* TASK LIST */}
+        <div className="bg-white p-6 rounded-2xl shadow">
+          <h3 className="text-lg font-semibold mb-4">
+            My Tasks ({tasks.length})
+          </h3>
 
           {isLoading && tasks.length === 0 ? (
-            <div className="loading-state">กำลังโหลดข้อมูลงาน...</div>
+            <div className="text-center text-gray-500">
+              ⏳ กำลังโหลดข้อมูลงาน...
+            </div>
           ) : tasks.length === 0 ? (
-            <div className="empty-state">
-              ยังไม่มีงานในระบบ ลองเพิ่มด้านบนเลยครับ
+            <div className="text-center text-gray-400">
+              📭 ยังไม่มีงานในระบบ ลองเพิ่มด้านบนเลยครับ
             </div>
           ) : (
-            <div className="task-list">
+            <div className="grid md:grid-cols-2 gap-4">
               {tasks.map((task) => (
                 <TaskCard
                   key={task._id}

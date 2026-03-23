@@ -18,7 +18,6 @@ const TaskDetail = () => {
 
   useEffect(() => {
     const loadTask = async () => {
-      // If tasks aren't loaded yet (page refresh), fetch them first
       if (tasks.length === 0) {
         await fetchTasks();
       }
@@ -43,8 +42,8 @@ const TaskDetail = () => {
   }, [id, tasks]);
 
   const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
     }));
   };
@@ -52,27 +51,20 @@ const TaskDetail = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const success = await updateTask(id, formData);
-    if (success) {
-      navigate("/dashboard");
-    }
+    if (success) navigate("/dashboard");
   };
 
   if (pageError) {
     return (
-      <div className="dashboard-container">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
         <button
-          className="btn-outline"
           onClick={() => navigate("/dashboard")}
-          style={{
-            marginBottom: "1rem",
-            display: "flex",
-            gap: "0.5rem",
-            alignItems: "center",
-          }}
+          className="flex items-center gap-2 mb-4 text-blue-500 hover:underline"
         >
           <ArrowLeft size={16} /> Back to Dashboard
         </button>
-        <div className="error-message">
+
+        <div className="flex items-center gap-2 bg-red-100 text-red-600 p-4 rounded">
           <AlertCircle size={18} />
           <span>{pageError}</span>
         </div>
@@ -81,75 +73,66 @@ const TaskDetail = () => {
   }
 
   return (
-    <div className="dashboard-container">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "2rem",
-          gap: "1rem",
-        }}
-      >
+    <div className="min-h-screen bg-gray-50 px-4 py-8">
+      {/* Header */}
+      <div className="max-w-3xl mx-auto mb-6 flex items-center gap-4">
         <button
-          className="icon-btn"
           onClick={() => navigate("/dashboard")}
-          aria-label="Go back"
+          className="p-2 rounded-full hover:bg-gray-200 transition"
         >
           <ArrowLeft size={24} />
         </button>
-        <h2>Edit Task Details</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Edit Task Details</h2>
       </div>
 
+      {/* Error */}
       {storeError && (
-        <div className="error-message">
+        <div className="max-w-3xl mx-auto mb-4 flex items-center gap-2 bg-red-100 text-red-600 p-3 rounded">
           <AlertCircle size={18} />
           <span>{storeError}</span>
         </div>
       )}
 
-      <div
-        className="auth-card"
-        style={{ maxWidth: "600px", margin: "0 auto" }}
-      >
-        <form onSubmit={onSubmit}>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
+      {/* Card */}
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+        <form onSubmit={onSubmit} className="space-y-5">
+          {/* Title */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Title</label>
             <input
               type="text"
-              id="title"
               name="title"
               value={formData.title}
               onChange={onChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="description">Description (Optional)</label>
+          {/* Description */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">
+              Description (Optional)
+            </label>
             <textarea
-              id="description"
               name="description"
               value={formData.description}
               onChange={onChange}
               rows="4"
-              style={{ resize: "vertical" }}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"
             />
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "1rem",
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="status">Status</label>
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Status */}
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">Status</label>
               <select
-                id="status"
                 name="status"
                 value={formData.status}
                 onChange={onChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="pending">Pending</option>
                 <option value="in-progress">In Progress</option>
@@ -157,13 +140,16 @@ const TaskDetail = () => {
               </select>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="priority">Priority</label>
+            {/* Priority */}
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Priority
+              </label>
               <select
-                id="priority"
                 name="priority"
                 value={formData.priority}
                 onChange={onChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -172,12 +158,13 @@ const TaskDetail = () => {
             </div>
           </div>
 
+          {/* Button */}
           <button
             type="submit"
-            className="btn btn-primary"
-            style={{ marginTop: "1rem" }}
+            className="w-full mt-4 bg-blue-500 text-white p-3 rounded-lg font-semibold hover:bg-blue-600 transition flex items-center justify-center gap-2"
           >
-            <Save size={18} /> Save Changes
+            <Save size={18} />
+            Save Changes
           </button>
         </form>
       </div>
