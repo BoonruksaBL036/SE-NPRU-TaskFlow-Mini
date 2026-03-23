@@ -11,10 +11,10 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.post('/auth/register', userData);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.accessToken);
       set({ 
         user: response.data, 
-        token: response.data.token, 
+        token: response.data.accessToken, 
         isLoading: false 
       });
       return true;
@@ -31,11 +31,11 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.post('/auth/login', userData);
-      localStorage.setItem('token', response.data.token);
-      set({ 
-        user: response.data, 
-        token: response.data.token, 
-        isLoading: false 
+      localStorage.setItem("token", response.data.accessToken);
+      set({
+        user: response.data,
+        token: response.data.accessToken,
+        isLoading: false,
       });
       return true;
     } catch (error) {
