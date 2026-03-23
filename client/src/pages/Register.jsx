@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import useAuthStore from '../store/useAuthStore';
-import { UserPlus, AlertCircle, Loader } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
+import { UserPlus, AlertCircle, Loader } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-  const [validationError, setValidationError] = useState('');
+  const [validationError, setValidationError] = useState("");
 
   const { register, isLoading, error, user } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -26,13 +26,13 @@ const Register = () => {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-    setValidationError('');
+    setValidationError("");
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      setValidationError('Passwords do not match');
+      setValidationError("Passwords do not match");
       return;
     }
     const success = await register({
@@ -41,7 +41,7 @@ const Register = () => {
       password: formData.password,
     });
     if (success) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   };
 
@@ -49,11 +49,14 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h1 className="auth-title">
-          <UserPlus size={28} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+          <UserPlus
+            size={28}
+            style={{ verticalAlign: "middle", marginRight: "8px" }}
+          />
           Register
         </h1>
         <p className="auth-subtitle">Create an account to manage your tasks</p>
-        
+
         {(error || validationError) && (
           <div className="error-message">
             <AlertCircle size={18} />
@@ -112,9 +115,13 @@ const Register = () => {
               minLength="6"
             />
           </div>
-          
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>
-            {isLoading ? <Loader className="spinner" size={20} /> : 'Register'}
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader className="spinner" size={20} /> : "Register"}
           </button>
         </form>
 

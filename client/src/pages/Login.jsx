@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import useAuthStore from '../store/useAuthStore';
-import { LogIn, AlertCircle, Loader } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
+import { LogIn, AlertCircle, Loader } from "lucide-react";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const { login, isLoading, error, user } = useAuthStore();
@@ -14,7 +14,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -29,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     const success = await login(formData);
     if (success) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   };
 
@@ -37,11 +37,14 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h1 className="auth-title">
-          <LogIn size={28} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+          <LogIn
+            size={28}
+            style={{ verticalAlign: "middle", marginRight: "8px" }}
+          />
           Login
         </h1>
         <p className="auth-subtitle">Login to your TaskFlow Mini account</p>
-        
+
         {error && (
           <div className="error-message">
             <AlertCircle size={18} />
@@ -74,9 +77,13 @@ const Login = () => {
               required
             />
           </div>
-          
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>
-            {isLoading ? <Loader className="spinner" size={20} /> : 'Login'}
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader className="spinner" size={20} /> : "Login"}
           </button>
         </form>
 
