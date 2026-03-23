@@ -16,23 +16,48 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
-  const { getMe, token } = useAuthStore();
+  const { getMe, user } = useAuthStore();
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       getMe();
     }
-  }, [token, getMe]);
+  }, [user, getMe]);
 
   return (
     <Router>
       <div className="app-layout">
         <Routes>
-          <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
-          <Route path="/register" element={token ? <Navigate to="/dashboard" /> : <Register />} />
-          <Route path="/login" element={token ? <Navigate to="/dashboard" /> : <Login />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/tasks/:id" element={<ProtectedRoute><TaskDetail /></ProtectedRoute>} />
+          <Route
+            path="/"
+            element={
+              user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/register"
+            element={user ? <Navigate to="/dashboard" /> : <Register />}
+          />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/dashboard" /> : <Login />}
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tasks/:id"
+            element={
+              <ProtectedRoute>
+                <TaskDetail />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>
