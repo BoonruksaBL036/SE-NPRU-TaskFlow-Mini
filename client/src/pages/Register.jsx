@@ -5,7 +5,7 @@ import { UserPlus, AlertCircle, Loader } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -84,8 +84,8 @@ const Register = () => {
               <label className="block text-sm text-gray-600 mb-1">Name</label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="fullName"
+                value={formData.fullName}
                 placeholder="Enter your name"
                 onChange={onChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
